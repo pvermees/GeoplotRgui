@@ -24,6 +24,20 @@ getCathColumn <- function(column) {
   cath[[column]][cascades]
 }
 
+functiongroups <- list(
+  trees = list(
+    "cart_all",
+    "cart_HFS",
+    "cart_ratios"
+  ),
+  others = list(
+    "AFM", "ATM", "AnAbOr", "CrY", "LaYb", "NbLaYb", "NbZrY", "QAPF",
+    "SrY", "TAS", "ThCo", "ThNbLaYb", "ThTaHf", "TiSiSr", "LuEuSr",
+    "TiVSc", "TiZrYSr", "Pearce1976", "NbNaSr", "TiSmV", "TiV",
+    "TiZrY", "YbTa", "YbTaRb", "YNb", "YNbRb", "ZrTi"
+  )
+)
+
 functions <- list(
   AFM=list(
     params=list(
@@ -716,7 +730,7 @@ ZrTi <- function(Zr, Ti, units, ...) {
 #' Starts the \code{GeoplotR} GUI
 #'
 #' Opens a web-browser with a Graphical User Interface (GUI) for the
-#' \code{IsoplotR} package.
+#' \code{GeoplotR} package.
 #' @param host IP address to listen on, default is 0.0.0.0 (all interfaces)
 #' @param port Internet port of the virtual server. If not defined, a
 #' random free port will be chosen and the browser will be opened
@@ -771,8 +785,11 @@ GeoplotR <- function(host='0.0.0.0', port=NULL, daemonize=FALSE) {
       YNbRb = GeoplotR::YNbRb,
       ZrTi = ZrTi,
       getSchema = function() {
-        list(functions=functions, params=params, types=types,
-          data=examples, optiongroups=optiongroups)
+        list(
+          functiongroups = functiongroups,
+          functions = functions, params = params, types = types,
+          data = examples, optiongroups = optiongroups
+        )
       }
     )
   )
