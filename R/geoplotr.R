@@ -25,16 +25,25 @@ getCathColumn <- function(column) {
 }
 
 functiongroups <- list(
-  trees = list(
+  "rock identification" = list(
+    "TAS", "QAPF", "AnAbOr"
+  ),
+  "Bowen vs. Fenner" = list(
+    "AFM", "ATM"
+  ),
+  "discrimination diagrams (basalt)" = list(
+    "TiZrY", "ZrTi", "TiV", "TiSmV",
+    "TiVSc", "TiSiSr", "TiZrYSr", "Pearce1976",
+    "NbLaYb", "NbNaSr", "NbZrY", "LuEuSr",
+    "CrY", "ThCo", "ThTaHf", "ThNbLaYb"
+  ),
+  "discrimination diagrams (granite)" = list(
+    "YbTa", "YbTaRb", "YNb", "YNbRb", "LaYb", "SrY"
+  ),
+  "decision trees" = list(
     "cart_all",
     "cart_HFS",
     "cart_ratios"
-  ),
-  others = list(
-    "AFM", "ATM", "AnAbOr", "CrY", "LaYb", "NbLaYb", "NbZrY", "QAPF",
-    "SrY", "TAS", "ThCo", "ThNbLaYb", "ThTaHf", "TiSiSr", "LuEuSr",
-    "TiVSc", "TiZrYSr", "Pearce1976", "NbNaSr", "TiSmV", "TiV",
-    "TiZrY", "YbTa", "YbTaRb", "YNb", "YNbRb", "ZrTi"
   )
 )
 
