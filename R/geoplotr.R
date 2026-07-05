@@ -12,6 +12,10 @@ fetchCathData <- function() {
   }
 }
 
+getConstantColumn <- function(value = 0) {
+  rep(value, length(getColumn("SiO2")))
+}
+
 getColumn <- function(column) {
   fetchTestData()
   get("test", dataEnvironment)[,column]
@@ -44,6 +48,9 @@ functiongroups <- list(
     "cart_all",
     "cart_HFS",
     "cart_ratios"
+  ),
+  "normative calculations" = list(
+    "CIPW"
   )
 )
 
@@ -111,6 +118,14 @@ functions <- list(
       ),
       optiongroups=c("plot")
   ),
+    CIPW=list(
+      params=list(
+        SiO2="SiO2", TiO2="TiO2", Al2O3="Al2O3", Fe2O3="Fe2O3", FeO="FeO",
+        MnO="MnO", MgO="MgO", CaO="CaO", Na2O="Na2O", K2O="K2O",
+        H2O="H2O", CO2="CO2", P2O5="P2O5", F="F", S="S"
+      ),
+      optiongroups=c("CIPW")
+    ),
   CrY=list(
       params=list(
           Cr="Cr",
@@ -265,7 +280,7 @@ functions <- list(
           units="tismv_units",
           ternary="tismv_ternary"
       ),
-      optiongroups=c("plot","labels")      
+      optiongroups=c("plot","labels")
   ),
   TiV=list(
       params=list(
@@ -382,6 +397,10 @@ params <- list(
   Pb64=list(type="floatCol", data="Pb64"),
   Pb74=list(type="floatCol", data="Pb74"),
   Pb84=list(type="floatCol", data="Pb84"),
+  H2O=list(type="floatCol", data="H2O"),
+  CO2=list(type="floatCol", data="CO2"),
+  Fl=list(type="floatCol", data="Fl"),
+  S=list(type="floatCol", data="S"),
   # for Ti-V and Ti-Zr
   Ti_prop=list(type="proportionCol_TiO2", data="Ti_prop"),
   Si_prop=list(type="proportionCol_SiO2", data="Si_prop"),
@@ -469,6 +488,12 @@ optiongroups <- list(
   labels=list(
     show.labels=list(type="b", initial=TRUE),
     short=list(type="b", initial=TRUE)
+  ),
+  CIPW=list(
+      normsum=list(type="b", initial=FALSE),
+      cancrinite=list(type="b", initial=FALSE),
+      spinel=list(type="b", initial=FALSE),
+      complete.results=list(type="b", initial=FALSE)
   ),
   framework=list(
     autorefresh=list(type="b", initial=FALSE)
@@ -591,6 +616,10 @@ examples <- list(
     Pb64=getColumn("Pb206/Pb204"),
     Pb74=getColumn("Pb207/Pb204"),
     Pb84=getColumn("Pb208/Pb204"),
+    H2O=getConstantColumn(),
+    CO2=getConstantColumn(),
+    Fl=getConstantColumn(),
+    S=getConstantColumn(),
     A=getCathColumn("Na2O") + getCathColumn("K2O"),
     F=getCathColumn("FeOT"),
     T=getCathColumn("TiO2"),
@@ -680,6 +709,23 @@ TiSmV <- function(Ti, Sm, V, units, ...){
     Ti <- GeoplotR::wtpct2ppm(Ti, "TiO2")
   }
   GeoplotR::TiSmV(Ti, Sm, V, ...)
+}
+
+CIPW <- function(SiO2, TiO2, Al2O3, Fe2O3, FeO, MnO, MgO, CaO, Na2O, K2O,
+                 H2O, CO2, P2O5, Fl, S, normsum, cancrinite, spinel,
+                 complete.results, ...){
+  wrdata <- data.frame(
+    SiO2=SiO2, TiO2=TiO2, Al2O3=Al2O3, Fe2O3=Fe2O3, FeO=FeO, MnO=MnO,
+    MgO=MgO, CaO=CaO, Na2O=Na2O, K2O=K2O, H2O=H2O, CO2=CO2, P2O5=P2O5,
+    F=Fl, S=S, check.names=FALSE
+  )
+  GeoplotR::CIPW(
+    wrdata,
+    normsum=normsum,
+    cancrinite=cancrinite,
+    spinel=spinel,
+    complete.results=complete.results
+  ) |> as.data.frame() |> as.list()
 }
 
 cart_all <- function(SiO2,TiO2,Al2O3,Fe2O3,FeO,CaO,MgO,
@@ -785,6 +831,7 @@ GeoplotR <- function(host='0.0.0.0', port=NULL, daemonize=FALSE) {
       TiVSc = TiVSc,
       TiZrY = TiZrY,
       TiZrYSr = TiZrYSr,
+      CIPW = CIPW,
       cart_all = cart_all,
       cart_HFS = cart_HFS,
       cart_ratios = cart_ratios,
