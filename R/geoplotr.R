@@ -50,7 +50,7 @@ functiongroups <- list(
     "cart_ratios"
   ),
   "normative calculations" = list(
-    "CIPW"
+    "CIPW", "Niggli"
   )
 )
 
@@ -118,14 +118,21 @@ functions <- list(
       ),
       optiongroups=c("plot")
   ),
-    CIPW=list(
+  CIPW=list(
       params=list(
         SiO2="SiO2", TiO2="TiO2", Al2O3="Al2O3", Fe2O3="Fe2O3", FeO="FeO",
         MnO="MnO", MgO="MgO", CaO="CaO", Na2O="Na2O", K2O="K2O",
         H2O="H2O", CO2="CO2", P2O5="P2O5", F="F", S="S"
       ),
       optiongroups=c("CIPW")
-    ),
+  ),
+  Niggli=list(
+      params=list(
+        SiO2="SiO2", TiO2="TiO2", Al2O3="Al2O3", Fe2O3="Fe2O3", FeO="FeO",
+        MnO="MnO", MgO="MgO", CaO="CaO", Na2O="Na2O", K2O="K2O",
+        H2O="H2O", CO2="CO2", P2O5="P2O5", F="F", S="S"
+      )
+  ),
   CrY=list(
       params=list(
           Cr="Cr",
@@ -728,6 +735,16 @@ CIPW <- function(SiO2, TiO2, Al2O3, Fe2O3, FeO, MnO, MgO, CaO, Na2O, K2O,
   ) |> as.data.frame() |> as.list()
 }
 
+Niggli <- function(SiO2, TiO2, Al2O3, Fe2O3, FeO, MnO, MgO, CaO, Na2O, K2O,
+                   H2O, CO2, P2O5, Fl, S, ...){
+  wrdata <- data.frame(
+    SiO2=SiO2, TiO2=TiO2, Al2O3=Al2O3, Fe2O3=Fe2O3, FeO=FeO, MnO=MnO,
+    MgO=MgO, CaO=CaO, Na2O=Na2O, K2O=K2O, H2O=H2O, CO2=CO2, P2O5=P2O5,
+    F=Fl, S=S, check.names=FALSE
+  )
+  GeoplotR::Catanorm(wrdata) |> as.data.frame() |> as.list()
+}
+
 cart_all <- function(SiO2,TiO2,Al2O3,Fe2O3,FeO,CaO,MgO,
                      MnO,K2O,Na2O,P2O5,La,Ce,Pr,Nd,Sm,
                      Eu,Gd,Tb,Dy,Ho,Er,Tm,Yb,Lu,Sc,V,
@@ -832,6 +849,7 @@ GeoplotR <- function(host='0.0.0.0', port=NULL, daemonize=FALSE) {
       TiZrY = TiZrY,
       TiZrYSr = TiZrYSr,
       CIPW = CIPW,
+      Niggli = Niggli,
       cart_all = cart_all,
       cart_HFS = cart_HFS,
       cart_ratios = cart_ratios,
