@@ -2,14 +2,18 @@ dataEnvironment <- new.env(parent=emptyenv())
 
 fetchTestData <- function() {
   if (!exists("test", dataEnvironment)) {
-    data(test, package='GeoplotR', envir=dataEnvironment);
+    utils::data("test", package='GeoplotR', envir=dataEnvironment);
   }
 }
 
 fetchCathData <- function() {
   if (!exists("cath", dataEnvironment)) {
-    data(cath, package='GeoplotR', envir=dataEnvironment);
+    utils::data("cath", package='GeoplotR', envir=dataEnvironment);
   }
+}
+
+getConstantColumn <- function(value = 0) {
+  rep(value, length(getColumn("SiO2")))
 }
 
 getColumn <- function(column) {
@@ -25,11 +29,14 @@ getCathColumn <- function(column) {
 }
 
 functiongroups <- list(
-  "rock identification" = list(
-    "TAS", "QAPF", "AnAbOr"
-  ),
   "Bowen vs. Fenner" = list(
     "AFM", "ATM"
+  ),
+  "normative calculations" = list(
+    "CIPW", "Niggli"
+  ),
+  "rock identification" = list(
+    "TAS", "QAPF", "AnAbOr"
   ),
   "discrimination diagrams (basalt)" = list(
     "TiZrY", "ZrTi", "TiV", "TiSmV",
@@ -110,6 +117,21 @@ functions <- list(
           Th="Th", U="U", units="cart_ratios_units"
       ),
       optiongroups=c("plot")
+  ),
+  CIPW=list(
+      params=list(
+        SiO2="SiO2", TiO2="TiO2", Al2O3="Al2O3", Fe2O3="Fe2O3", FeO="FeO",
+        MnO="MnO", MgO="MgO", CaO="CaO", Na2O="Na2O", K2O="K2O",
+        H2O="H2O", CO2="CO2", P2O5="P2O5", F="F", S="S"
+      ),
+      optiongroups=c("CIPW")
+  ),
+  Niggli=list(
+      params=list(
+        SiO2="SiO2", TiO2="TiO2", Al2O3="Al2O3", Fe2O3="Fe2O3", FeO="FeO",
+        MnO="MnO", MgO="MgO", CaO="CaO", Na2O="Na2O", K2O="K2O",
+        H2O="H2O", CO2="CO2", P2O5="P2O5", F="F", S="S"
+      )
   ),
   CrY=list(
       params=list(
@@ -265,7 +287,7 @@ functions <- list(
           units="tismv_units",
           ternary="tismv_ternary"
       ),
-      optiongroups=c("plot","labels")      
+      optiongroups=c("plot","labels")
   ),
   TiV=list(
       params=list(
@@ -382,6 +404,10 @@ params <- list(
   Pb64=list(type="floatCol", data="Pb64"),
   Pb74=list(type="floatCol", data="Pb74"),
   Pb84=list(type="floatCol", data="Pb84"),
+  H2O=list(type="floatCol", data="H2O"),
+  CO2=list(type="floatCol", data="CO2"),
+  Fl=list(type="floatCol", data="Fl"),
+  S=list(type="floatCol", data="S"),
   # for Ti-V and Ti-Zr
   Ti_prop=list(type="proportionCol_TiO2", data="Ti_prop"),
   Si_prop=list(type="proportionCol_SiO2", data="Si_prop"),
@@ -469,6 +495,12 @@ optiongroups <- list(
   labels=list(
     show.labels=list(type="b", initial=TRUE),
     short=list(type="b", initial=TRUE)
+  ),
+  CIPW=list(
+      normsum=list(type="b", initial=FALSE),
+      cancrinite=list(type="b", initial=FALSE),
+      spinel=list(type="b", initial=FALSE),
+      complete.results=list(type="b", initial=FALSE)
   ),
   framework=list(
     autorefresh=list(type="b", initial=FALSE)
@@ -591,6 +623,10 @@ examples <- list(
     Pb64=getColumn("Pb206/Pb204"),
     Pb74=getColumn("Pb207/Pb204"),
     Pb84=getColumn("Pb208/Pb204"),
+    H2O=getConstantColumn(),
+    CO2=getConstantColumn(),
+    Fl=getConstantColumn(),
+    S=getConstantColumn(),
     A=getCathColumn("Na2O") + getCathColumn("K2O"),
     F=getCathColumn("FeOT"),
     T=getCathColumn("TiO2"),
@@ -626,115 +662,143 @@ examples <- list(
     bandwidth="nrd0"
 )
 
-Pearce1976 <- function(SiO2,Al2O3,TiO2,CaO,MgO,MnO,K2O,Na2O, ...) {
-  major <- data.frame(SiO2,Al2O3,TiO2,CaO,MgO,MnO,K2O,Na2O)
-  GeoplotR::Pearce1976(major, ...)
-}
-TiV <- function(Ti, V, units, ...) {
-  if (units[[1]] == "wt%") {
-    Ti <- GeoplotR::wtpct2ppm(Ti, "TiO2")
+aliases <- list(
+  Pearce1976 = function(SiO2,Al2O3,TiO2,CaO,MgO,MnO,K2O,Na2O, ...) {
+    major <- data.frame(SiO2,Al2O3,TiO2,CaO,MgO,MnO,K2O,Na2O)
+    GeoplotR::Pearce1976(major, ...)
+  },
+  TiV = function(Ti, V, units, ...) {
+    if (units[[1]] == "wt%") {
+      Ti <- GeoplotR::wtpct2ppm(Ti, "TiO2")
+    }
+    GeoplotR::TiV(Ti, V, ...)
+  },
+  TiZrY = function(Ti, Zr, Y, units, ...) {
+    if (units[[1]] == "wt%") {
+      Ti <- GeoplotR::wtpct2ppm(Ti, "TiO2")
+    }
+    if (units[[2]] == "wt%") {
+      Zr <- GeoplotR::wtpct2ppm(Zr, "ZrO2")
+    }
+    if (units[[3]] == "wt%") {
+      Y <- GeoplotR::wtpct2ppm(Y, "Y2O3")
+    }
+    GeoplotR::TiZrY(Ti, Zr, Y, ...)
+  },
+  TiZrYSr = function(Ti, Zr, Y, Sr, units, ...) {
+    if (units[[1]] == "wt%") {
+      Ti <- GeoplotR::wtpct2ppm(Ti, "TiO2")
+    }
+    GeoplotR::TiZrYSr(Ti, Zr, Y, Sr, ...)
+  },
+  TiSiSr = function(Ti, Si, Sr, units, ...){
+    if (units[[1]] == "wt%") {
+      Ti <- GeoplotR::wtpct2ppm(Ti, "TiO2")
+    }
+    if (units[[2]] == "wt%") {
+      Si <- GeoplotR::wtpct2ppm(Si, "SiO2")
+    }
+    GeoplotR::TiSiSr(Ti, Si, Sr, ...)
+  },
+  TiVSc = function(Ti, V, Sc, units, ...){
+    if (units[[1]] == "wt%") {
+      Ti <- GeoplotR::wtpct2ppm(Ti, "TiO2")
+    }
+    GeoplotR::TiVSc(Ti, V, Sc, ...)
+  },
+  NbNaSr = function(Nb, Na, Sr, units, ...){
+    if (units[[2]] == "wt%") {
+      Na <- GeoplotR::wtpct2ppm(Na, "Na2O")
+    }
+    GeoplotR::NbNaSr(Nb, Na, Sr, ...)
+  },
+  TiSmV = function(Ti, Sm, V, units, ...){
+    if (units[[1]] == "wt%") {
+      Ti <- GeoplotR::wtpct2ppm(Ti, "TiO2")
+    }
+    GeoplotR::TiSmV(Ti, Sm, V, ...)
+  },
+  CIPW = function(SiO2, TiO2, Al2O3, Fe2O3, FeO, MnO, MgO, CaO, Na2O, K2O,
+                  H2O, CO2, P2O5, Fl, S, normsum, cancrinite, spinel,
+                  complete.results, ...){
+    wrdata <- data.frame(
+      SiO2=SiO2, TiO2=TiO2, Al2O3=Al2O3, Fe2O3=Fe2O3, FeO=FeO, MnO=MnO,
+      MgO=MgO, CaO=CaO, Na2O=Na2O, K2O=K2O, H2O=H2O, CO2=CO2, P2O5=P2O5,
+      F=Fl, S=S, check.names=FALSE
+    )
+    result <- GeoplotR::CIPW(
+      wrdata,
+      normsum=normsum,
+      cancrinite=cancrinite,
+      spinel=spinel,
+      complete.results=complete.results
+    )
+    as.data.frame(result)
+  },
+  Niggli = function(SiO2, TiO2, Al2O3, Fe2O3, FeO, MnO, MgO, CaO, Na2O, K2O,
+                    H2O, CO2, P2O5, Fl, S, ...){
+    wrdata <- data.frame(
+      SiO2=SiO2, TiO2=TiO2, Al2O3=Al2O3, Fe2O3=Fe2O3, FeO=FeO, MnO=MnO,
+      MgO=MgO, CaO=CaO, Na2O=Na2O, K2O=K2O, H2O=H2O, CO2=CO2, P2O5=P2O5,
+      F=Fl, S=S, check.names=FALSE
+    )
+    result <- GeoplotR::Catanorm(wrdata)
+    as.data.frame(result)
+  },
+  cart_all = function(SiO2,TiO2,Al2O3,Fe2O3,FeO,CaO,MgO,
+                      MnO,K2O,Na2O,P2O5,La,Ce,Pr,Nd,Sm,
+                      Eu,Gd,Tb,Dy,Ho,Er,Tm,Yb,Lu,Sc,V,
+                      Cr,Co,Ni,Cu,Zn,Ga,Rb,Sr,Y,Zr,Nb,
+                      Sn,Cs,Ba,Hf,Ta,Pb,Th,U,NdNd,
+                      SrSr,Pb64,Pb74,Pb84,...){
+    dat <- data.frame(SiO2=SiO2, TiO2=TiO2, Al2O3=Al2O3,
+                      Fe2O3=Fe2O3, FeO=FeO, CaO=CaO, MgO=MgO,
+                      MnO=MnO, K2O=K2O, Na2O=Na2O, P2O5=P2O5,
+                      La=La, Ce=Ce, Pr=Pr, Nd=Nd, Sm=Sm,
+                      Eu=Eu, Gd=Gd, Tb=Tb, Dy=Dy, Ho=Ho,
+                      Er=Er, Tm=Tm, Yb=Yb, Lu=Lu, Sc=Sc, V=V,
+                      Cr=Cr, Co=Co, Ni=Ni, Cu=Cu, Zn=Zn,
+                      Ga=Ga, Rb=Rb, Sr=Sr, Y=Y, Zr=Zr, Nb=Nb,
+                      Sn=Sn, Cs=Cs, Ba=Ba, Hf=Hf, Ta=Ta,
+                      Pb=Pb, Th=Th, U=U, 'Nd143/Nd144'=NdNd,
+                      'Sr87/Sr86'=SrSr, 'Pb206/Pb204'=Pb64,
+                      'Pb207/Pb204'=Pb74, 'Pb208/Pb204'=Pb84,
+                      check.names=FALSE)
+    GeoplotR::cart(dat,option=1,plot=TRUE,...)
+  },
+  cart_HFS = function(Ti,La,Ce,Pr,Nd,Sm,Gd,Tb,Dy,Ho,Er,Tm,Yb,Lu,Sc,Y,Zr,
+                      Nb,Hf,Ta,Pb,Th,U,NdNd,SrSr,Pb64,Pb74,Pb84,units,...){
+    if (units[[1]] == "ppm") {
+      TiO2 <- GeoplotR::ppm2wtpct(Ti, "TiO2")
+    }
+    dat <- data.frame(TiO2=TiO2,La=La,Ce=Ce,Pr=Pr,Nd=Nd,Sm=Sm,Gd=Gd,
+                      Tb=Tb,Dy=Dy,Ho=Ho,Er=Er,Tm=Tm,Yb=Yb,Lu=Lu,Sc=Sc,
+                      Y=Y,Zr=Zr,Nb=Nb,Hf=Hf,Ta=Ta,Pb=Pb,Th=Th,U=U,
+                      "Nd143/Nd144"=NdNd,"Sr87/Sr86"=SrSr,
+                      "Pb206/Pb204"=Pb64,"Pb207/Pb204"=Pb74,
+                      "Pb208/Pb204"=Pb84,check.names=FALSE)
+    GeoplotR::cart(dat,option=2,plot=TRUE,...)
+  },
+  cart_ratios = function(Ti,La,Ce,Nd,Sm,Eu,Gd,Tb,Dy,Ho,Er,Tm,Yb,Lu,
+                          Sc,V,Sr,Y,Zr,Nb,Hf,Ta,Th,U,units,...){
+    if (units[[1]] == "wt%") {
+      Ti <- GeoplotR::wtpct2ppm(Ti, "TiO2")
+    }
+    dat <- data.frame(Ti=Ti,La=La,Ce=Ce,Nd=Nd,Sm=Sm,Eu=Eu,Gd=Gd,Tb=Tb,
+                      Dy=Dy,Ho=Ho,Er=Er,Tm=Tm,Yb=Yb,Lu=Lu,Sc=Sc,V=V,
+                      Sr=Sr,Y=Y,Zr=Zr,Nb=Nb,Hf=Hf,Ta=Ta,Th=Th,U=U)
+    GeoplotR::cart(dat,option=3,plot=TRUE,...)
+  },
+  ZrTi = function(Zr, Ti, units, ...) {
+    if (units[[1]] == "wt%") {
+      Zr <- GeoplotR::wtpct2ppm(Zr, "ZrO2")
+    }
+    if (units[[2]] == "wt%") {
+      Ti <- GeoplotR::wtpct2ppm(Ti, "TiO2")
+    }
+    GeoplotR::ZrTi(Zr, Ti, ...)
   }
-  GeoplotR::TiV(Ti, V, ...)
-}
-TiZrY <- function(Ti, Zr, Y, units, ...) {
-  if (units[[1]] == "wt%") {
-    Ti <- GeoplotR::wtpct2ppm(Ti, "TiO2")
-  }
-  if (units[[2]] == "wt%") {
-    Zr <- GeoplotR::wtpct2ppm(Zr, "ZrO2")
-  }
-  if (units[[3]] == "wt%") {
-    Y <- GeoplotR::wtpct2ppm(Y, "Y2O3")
-  }
-  GeoplotR::TiZrY(Ti, Zr, Y, ...)
-}
-TiZrYSr <- function(Ti, Zr, Y, Sr, units, ...) {
-  if (units[[1]] == "wt%") {
-    Ti <- GeoplotR::wtpct2ppm(Ti, "TiO2")
-  }
-  GeoplotR::TiZrYSr(Ti, Zr, Y, Sr, ...)
-}
-TiSiSr <- function(Ti, Si, Sr, units, ...){
-  if (units[[1]] == "wt%") {
-    Ti <- GeoplotR::wtpct2ppm(Ti, "TiO2")
-  }
-  if (units[[2]] == "wt%") {
-    Si <- GeoplotR::wtpct2ppm(Si, "SiO2")
-  }
-  GeoplotR::TiSiSr(Ti, Si, Sr, ...)
-}
-TiVSc <- function(Ti, V, Sc, units, ...){
-  if (units[[1]] == "wt%") {
-    Ti <- GeoplotR::wtpct2ppm(Ti, "TiO2")
-  }
-  GeoplotR::TiVSc(Ti, V, Sc, ...)
-}
-NbNaSr <- function(Nb, Na, Sr, units, ...){
-  if (units[[2]] == "wt%") {
-    Na <- GeoplotR::wtpct2ppm(Na, "Na2O")
-  }
-  GeoplotR::NbNaSr(Nb, Na, Sr, ...)
-}
-TiSmV <- function(Ti, Sm, V, units, ...){
-  if (units[[1]] == "wt%") {
-    Ti <- GeoplotR::wtpct2ppm(Ti, "TiO2")
-  }
-  GeoplotR::TiSmV(Ti, Sm, V, ...)
-}
-
-cart_all <- function(SiO2,TiO2,Al2O3,Fe2O3,FeO,CaO,MgO,
-                     MnO,K2O,Na2O,P2O5,La,Ce,Pr,Nd,Sm,
-                     Eu,Gd,Tb,Dy,Ho,Er,Tm,Yb,Lu,Sc,V,
-                     Cr,Co,Ni,Cu,Zn,Ga,Rb,Sr,Y,Zr,Nb,
-                     Sn,Cs,Ba,Hf,Ta,Pb,Th,U,NdNd,
-                     SrSr,Pb64,Pb74,Pb84,...){
-  dat <- data.frame(SiO2=SiO2, TiO2=TiO2, Al2O3=Al2O3,
-                    Fe2O3=Fe2O3, FeO=FeO, CaO=CaO, MgO=MgO,
-                    MnO=MnO, K2O=K2O, Na2O=Na2O, P2O5=P2O5,
-                    La=La, Ce=Ce, Pr=Pr, Nd=Nd, Sm=Sm,
-                    Eu=Eu, Gd=Gd, Tb=Tb, Dy=Dy, Ho=Ho,
-                    Er=Er, Tm=Tm, Yb=Yb, Lu=Lu, Sc=Sc, V=V,
-                    Cr=Cr, Co=Co, Ni=Ni, Cu=Cu, Zn=Zn,
-                    Ga=Ga, Rb=Rb, Sr=Sr, Y=Y, Zr=Zr, Nb=Nb,
-                    Sn=Sn, Cs=Cs, Ba=Ba, Hf=Hf, Ta=Ta,
-                    Pb=Pb, Th=Th, U=U, 'Nd143/Nd144'=NdNd,
-                    'Sr87/Sr86'=SrSr, 'Pb206/Pb204'=Pb64,
-                    'Pb207/Pb204'=Pb74, 'Pb208/Pb204'=Pb84,
-                    check.names=FALSE)
-  GeoplotR::cart(dat,option=1,plot=TRUE,...)
-}
-cart_HFS <- function(Ti,La,Ce,Pr,Nd,Sm,Gd,Tb,Dy,Ho,Er,Tm,Yb,Lu,Sc,Y,Zr,
-                     Nb,Hf,Ta,Pb,Th,U,NdNd,SrSr,Pb64,Pb74,Pb84,units,...){
-  if (units[[1]] == "ppm") {
-    TiO2 <- GeoplotR::ppm2wtpct(Ti, "TiO2")
-  }
-  dat <- data.frame(TiO2=TiO2,La=La,Ce=Ce,Pr=Pr,Nd=Nd,Sm=Sm,Gd=Gd,
-                    Tb=Tb,Dy=Dy,Ho=Ho,Er=Er,Tm=Tm,Yb=Yb,Lu=Lu,Sc=Sc,
-                    Y=Y,Zr=Zr,Nb=Nb,Hf=Hf,Ta=Ta,Pb=Pb,Th=Th,U=U,
-                    "Nd143/Nd144"=NdNd,"Sr87/Sr86"=SrSr,
-                    "Pb206/Pb204"=Pb64,"Pb207/Pb204"=Pb74,
-                    "Pb208/Pb204"=Pb84,check.names=FALSE)
-  GeoplotR::cart(dat,option=2,plot=TRUE,...)
-}
-cart_ratios <- function(Ti,La,Ce,Nd,Sm,Eu,Gd,Tb,Dy,Ho,Er,Tm,Yb,Lu,
-                        Sc,V,Sr,Y,Zr,Nb,Hf,Ta,Th,U,units,...){
-  if (units[[1]] == "wt%") {
-    Ti <- GeoplotR::wtpct2ppm(Ti, "TiO2")
-  }
-  dat <- data.frame(Ti=Ti,La=La,Ce=Ce,Nd=Nd,Sm=Sm,Eu=Eu,Gd=Gd,Tb=Tb,
-                    Dy=Dy,Ho=Ho,Er=Er,Tm=Tm,Yb=Yb,Lu=Lu,Sc=Sc,V=V,
-                    Sr=Sr,Y=Y,Zr=Zr,Nb=Nb,Hf=Hf,Ta=Ta,Th=Th,U=U)
-  GeoplotR::cart(dat,option=3,plot=TRUE,...)
-}
-ZrTi <- function(Zr, Ti, units, ...) {
-  if (units[[1]] == "wt%") {
-    Zr <- GeoplotR::wtpct2ppm(Zr, "ZrO2")
-  }
-  if (units[[2]] == "wt%") {
-    Ti <- GeoplotR::wtpct2ppm(Ti, "TiO2")
-  }
-  GeoplotR::ZrTi(Zr, Ti, ...)
-}
+)
 
 #' Starts the \code{GeoplotR} GUI
 #'
@@ -770,29 +834,31 @@ GeoplotR <- function(host='0.0.0.0', port=NULL, daemonize=FALSE) {
       LaYb = GeoplotR::LaYb,
       LuEuSr = GeoplotR::LuEuSr,
       NbLaYb = GeoplotR::NbLaYb,
-      NbNaSr = NbNaSr,
+      NbNaSr = aliases$NbNaSr,
       NbZrY = GeoplotR::NbZrY,
-      Pearce1976 = Pearce1976,
+      Pearce1976 = aliases$Pearce1976,
       QAPF = GeoplotR::QAPF,
       SrY = GeoplotR::SrY,
       TAS = GeoplotR::TAS,
       ThCo = GeoplotR::ThCo,
       ThNbLaYb = GeoplotR::ThNbLaYb,
       ThTaHf = GeoplotR::ThTaHf,
-      TiSiSr = TiSiSr,
-      TiSmV = TiSmV,
-      TiV = TiV,
-      TiVSc = TiVSc,
-      TiZrY = TiZrY,
-      TiZrYSr = TiZrYSr,
-      cart_all = cart_all,
-      cart_HFS = cart_HFS,
-      cart_ratios = cart_ratios,
+      TiSiSr = aliases$TiSiSr,
+      TiSmV = aliases$TiSmV,
+      TiV = aliases$TiV,
+      TiVSc = aliases$TiVSc,
+      TiZrY = aliases$TiZrY,
+      TiZrYSr = aliases$TiZrYSr,
+      CIPW = aliases$CIPW,
+      Niggli = aliases$Niggli,
+      cart_all = aliases$cart_all,
+      cart_HFS = aliases$cart_HFS,
+      cart_ratios = aliases$cart_ratios,
       YbTa = GeoplotR::YbTa,
       YbTaRb = GeoplotR::YbTaRb,
       YNb = GeoplotR::YNb,
       YNbRb = GeoplotR::YNbRb,
-      ZrTi = ZrTi,
+      ZrTi = aliases$ZrTi,
       getSchema = function() {
         list(
           functiongroups = functiongroups,
