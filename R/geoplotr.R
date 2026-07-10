@@ -122,7 +122,7 @@ functions <- list(
       params=list(
         SiO2="SiO2", TiO2="TiO2", Al2O3="Al2O3", Fe2O3="Fe2O3", FeO="FeO",
         MnO="MnO", MgO="MgO", CaO="CaO", Na2O="Na2O", K2O="K2O",
-        H2O="H2O", CO2="CO2", P2O5="P2O5", F="F", S="S"
+        H2O="H2O", CO2="CO2", P2O5="P2O5", Fl="Fl", S="S"
       ),
       optiongroups=c("CIPW")
   ),
@@ -130,7 +130,7 @@ functions <- list(
       params=list(
         SiO2="SiO2", TiO2="TiO2", Al2O3="Al2O3", Fe2O3="Fe2O3", FeO="FeO",
         MnO="MnO", MgO="MgO", CaO="CaO", Na2O="Na2O", K2O="K2O",
-        H2O="H2O", CO2="CO2", P2O5="P2O5", F="F", S="S"
+        H2O="H2O", CO2="CO2", P2O5="P2O5", Fl="Fl", S="S"
       )
   ),
   CrY=list(
