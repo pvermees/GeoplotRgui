@@ -85,7 +85,7 @@ dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips
 No file Rd2.ind.
 
 [2{/usr/share/texlive/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}]
-(/tmp/Rtmp2rpXWG/Rd2pdf13f102a3fa25d/Rd2.aux)
+(/tmp/RtmpMAZxZe/Rd2pdf153031b4bc1bc/Rd2.aux)
 
 Package rerunfilecheck Warning: File `Rd2.out' has changed.
 (rerunfilecheck)                Rerun to get outlines right
@@ -96,7 +96,7 @@ r.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/sha
 re/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/ty
 pe1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (2 pages, 67398 bytes).
+Output written on Rd2.pdf (2 pages, 67854 bytes).
 Transcript written on Rd2.log.
 This is makeindex, version 2.17 [TeX Live 2025/dev] (kpathsea + Thai support).
 Scanning input file Rd2.idx....done (1 entries accepted, 0 rejected).
@@ -171,24 +171,24 @@ For additional information on amsmath, use the `?' option.
 Writing index file Rd2.idx
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd)
 (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
-(/tmp/Rtmp2rpXWG/Rd2pdf13f102a3fa25d/Rd2.aux)
+(/tmp/RtmpMAZxZe/Rd2pdf153031b4bc1bc/Rd2.aux)
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-) (/tmp/Rtmp2rpXWG/Rd2pdf13f102a3fa25d/Rd2.out)
-(/tmp/Rtmp2rpXWG/Rd2pdf13f102a3fa25d/Rd2.out)
+) (/tmp/RtmpMAZxZe/Rd2pdf153031b4bc1bc/Rd2.out)
+(/tmp/RtmpMAZxZe/Rd2pdf153031b4bc1bc/Rd2.out)
 (/usr/share/texlive/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
 (/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd)
-(/tmp/Rtmp2rpXWG/Rd2pdf13f102a3fa25d/Rd2.toc)
+(/tmp/RtmpMAZxZe/Rd2pdf153031b4bc1bc/Rd2.toc)
 [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-
 dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips
 /inconsolata/i4-t1-0.enc}]
 (/usr/share/texlive/texmf-dist/tex/latex/inconsolata/ts1zi4.fd)
-(/tmp/Rtmp2rpXWG/Rd2pdf13f102a3fa25d/Rd2.ind
+(/tmp/RtmpMAZxZe/Rd2pdf153031b4bc1bc/Rd2.ind
 [2{/usr/share/texlive/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}]
 
-[3]) (/tmp/Rtmp2rpXWG/Rd2pdf13f102a3fa25d/Rd2.aux)
+[3]) (/tmp/RtmpMAZxZe/Rd2pdf153031b4bc1bc/Rd2.aux)
 
 Package rerunfilecheck Warning: File `Rd2.out' has changed.
 (rerunfilecheck)                Rerun to get outlines right
@@ -199,7 +199,7 @@ r.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/sha
 re/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/ty
 pe1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (3 pages, 67984 bytes).
+Output written on Rd2.pdf (3 pages, 68439 bytes).
 Transcript written on Rd2.log.
 This is makeindex, version 2.17 [TeX Live 2025/dev] (kpathsea + Thai support).
 Scanning input file Rd2.idx....done (1 entries accepted, 0 rejected).
@@ -274,30 +274,30 @@ For additional information on amsmath, use the `?' option.
 Writing index file Rd2.idx
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd)
 (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
-(/tmp/Rtmp2rpXWG/Rd2pdf13f102a3fa25d/Rd2.aux)
+(/tmp/RtmpMAZxZe/Rd2pdf153031b4bc1bc/Rd2.aux)
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-) (/tmp/Rtmp2rpXWG/Rd2pdf13f102a3fa25d/Rd2.out)
-(/tmp/Rtmp2rpXWG/Rd2pdf13f102a3fa25d/Rd2.out)
+) (/tmp/RtmpMAZxZe/Rd2pdf153031b4bc1bc/Rd2.out)
+(/tmp/RtmpMAZxZe/Rd2pdf153031b4bc1bc/Rd2.out)
 (/usr/share/texlive/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
 (/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd)
-(/tmp/Rtmp2rpXWG/Rd2pdf13f102a3fa25d/Rd2.toc)
+(/tmp/RtmpMAZxZe/Rd2pdf153031b4bc1bc/Rd2.toc)
 [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-
 dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips
 /inconsolata/i4-t1-0.enc}]
 (/usr/share/texlive/texmf-dist/tex/latex/inconsolata/ts1zi4.fd)
-(/tmp/Rtmp2rpXWG/Rd2pdf13f102a3fa25d/Rd2.ind
+(/tmp/RtmpMAZxZe/Rd2pdf153031b4bc1bc/Rd2.ind
 [2{/usr/share/texlive/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}]
 
-[3]) (/tmp/Rtmp2rpXWG/Rd2pdf13f102a3fa25d/Rd2.aux) )</usr/share/texlive/texmf-d
+[3]) (/tmp/RtmpMAZxZe/Rd2pdf153031b4bc1bc/Rd2.aux) )</usr/share/texlive/texmf-d
 ist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></usr/share/texlive/tex
 mf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/t
 ype1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/
 utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (3 pages, 68615 bytes).
+Output written on Rd2.pdf (3 pages, 68852 bytes).
 Transcript written on Rd2.log.
 Saving output to ‘GeoplotRgui-manual.pdf’ ...
 Done
-You may want to clean up by 'rm -Rf /tmp/Rtmp2rpXWG/Rd2pdf13f102a3fa25d'
+You may want to clean up by 'rm -Rf /tmp/RtmpMAZxZe/Rd2pdf153031b4bc1bc'
